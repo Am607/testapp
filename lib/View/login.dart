@@ -1,9 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:testapp/Model/usersModel.dart';
+import 'package:testapp/Services/loginServices.dart';
+
 import 'package:testapp/Widgets/customWidgets.dart';
 
-class Login extends StatelessWidget {
+class Login extends StatefulWidget {
+  @override
+  _LoginState createState() => _LoginState();
+}
+
+class _LoginState extends State<Login> {
   final userNameController = TextEditingController();
   final passwordController = TextEditingController();
+  // final Logincontroller logincontroller = Get.put(Logincontroller());
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -59,7 +68,19 @@ class Login extends StatelessWidget {
                 height: 70,
                 padding: EdgeInsets.all(10),
                 child: RaisedButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    setState(() {
+                      authenticate(
+                          password: passwordController.text,
+                          phone: userNameController.text);
+
+                      // if RemoteServices.isLoading) {
+                      //  print("asd");
+                      // } else {
+                      //   print("a");
+                      // }
+                    });
+                  },
                   child: Text("Login"),
                   color: Colors.blue,
                 )),
@@ -84,6 +105,19 @@ class Login extends StatelessWidget {
                             fontSize: 18),
                       ))
                 ],
+              ),
+            ),
+            Container(
+              child: FutureBuilder<User>(
+                builder: (context, snapshot) {
+                  if (snapshot.hasData) {
+                    return Text(snapshot.data.status);
+                  } else if (snapshot.hasError) {
+                    return Text('${snapshot.error}');
+                  }
+
+                  return Center(child: CircularProgressIndicator());
+                },
               ),
             )
           ],
