@@ -44,7 +44,9 @@ class _HomeState extends State<HomePage> {
             } else if (snapshot.hasError) {
               return Text('error');
             }
-            return Center(child: Text("${snapshot.error}"));
+            return Center(
+              child: CircularProgressIndicator(),
+            );
           }),
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.add),

@@ -107,19 +107,6 @@ class _LoginState extends State<Login> {
                 ],
               ),
             ),
-            Container(
-              child: FutureBuilder<User>(
-                builder: (context, snapshot) {
-                  if (snapshot.hasData) {
-                    return Text(snapshot.data.status);
-                  } else if (snapshot.hasError) {
-                    return Text('${snapshot.error}');
-                  }
-
-                  return Center(child: CircularProgressIndicator());
-                },
-              ),
-            )
           ],
         ),
       ),

@@ -12,9 +12,9 @@ Future<User> authenticate({String phone, String password}) async {
   if (response.statusCode == 200) {
     print(response.body);
 
-    var jsonString = response.body;
+    var jsonString1 = response.body;
     isLoading = true;
-    return User.fromJson(jsonDecode(jsonString));
+    return User.fromJson(jsonDecode(jsonString1));
   } else {
     return null;
     // throw Exception('Failed to create album.');
