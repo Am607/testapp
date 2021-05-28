@@ -18,11 +18,7 @@ class _HomeState extends State<HomePage> {
     super.initState();
   }
 
-  @override
-  void setState(fn) {
-    print("calledb");
-    super.setState(fn);
-  }
+
 
   @override
   Widget build(BuildContext context) {

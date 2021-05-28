@@ -1,6 +1,11 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:testapp/Model/usersModel.dart';
 import 'package:testapp/Services/loginServices.dart';
+import 'package:testapp/View/home.dart';
+
+import 'package:testapp/View/homePage.dart';
 
 import 'package:testapp/Widgets/customWidgets.dart';
 
@@ -10,9 +15,13 @@ class Login extends StatefulWidget {
 }
 
 class _LoginState extends State<Login> {
+  bool isApiCall = false;
   final userNameController = TextEditingController();
   final passwordController = TextEditingController();
   // final Logincontroller logincontroller = Get.put(Logincontroller());
+  final scaffoldKey = GlobalKey<ScaffoldState>();
+  Future<User> userData;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -70,15 +79,29 @@ class _LoginState extends State<Login> {
                 child: RaisedButton(
                   onPressed: () {
                     setState(() {
-                      authenticate(
-                          password: passwordController.text,
-                          phone: userNameController.text);
-
-                      // if RemoteServices.isLoading) {
-                      //  print("asd");
-                      // } else {
-                      //   print("a");
-                      // }
+                      isApiCall = true;
+                      APIServices apiServices = APIServices();
+                      apiServices
+                          .authenticate(
+                              password: passwordController.text,
+                              phone: userNameController.text)
+                          .then((value) {
+                        if (value.status[0].toString() == "1") {
+                          print(value.data.userProfile[0].empFirstname);
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => LandingPage(
+                                      fname: value
+                                          .data.userProfile[0].empFirstname,
+                                      lname:
+                                          value.data.userProfile[0].empLastname,
+                                    )),
+                          );
+                        }
+                        print(value.status[0].toString());
+                        print('aaa');
+                      });
                     });
                   },
                   child: Text("Login"),
