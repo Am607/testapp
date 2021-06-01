@@ -6,6 +6,7 @@ import 'package:testapp/Services/loginServices.dart';
 import 'package:testapp/View/home.dart';
 
 import 'package:testapp/View/homePage.dart';
+import 'package:testapp/View/progress.dart';
 
 import 'package:testapp/Widgets/customWidgets.dart';
 
@@ -24,6 +25,14 @@ class _LoginState extends State<Login> {
 
   @override
   Widget build(BuildContext context) {
+    return ProgressUi(
+      child: _uiSetup(context),
+      inAsyncCall: isApiCall,
+      opacity: 0.3,
+    );
+  }
+
+  Widget _uiSetup(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text("Login"),
@@ -86,21 +95,27 @@ class _LoginState extends State<Login> {
                               password: passwordController.text,
                               phone: userNameController.text)
                           .then((value) {
-                        if (value.status[0].toString() == "1") {
-                          print(value.data.userProfile[0].empFirstname);
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => LandingPage(
-                                      fname: value
-                                          .data.userProfile[0].empFirstname,
-                                      lname:
-                                          value.data.userProfile[0].empLastname,
-                                    )),
-                          );
+                        if (value != null) {
+                          setState(() {
+                            isApiCall = false;
+                          });
+
+                          if (value.status[0].toString() == "1") {
+                            print(value.data.userProfile[0].empFirstname);
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => LandingPage(
+                                        fname: value
+                                            .data.userProfile[0].empFirstname,
+                                        lname: value
+                                            .data.userProfile[0].empLastname,
+                                      )),
+                            );
+                          }
+                          print(value.status[0].toString());
+                          print('aaa');
                         }
-                        print(value.status[0].toString());
-                        print('aaa');
                       });
                     });
                   },
