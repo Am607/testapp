@@ -11,85 +11,86 @@ class User {
 
   factory User.fromJson(Map<String, dynamic> json) {
     return User(
-      status: json["status"],
+      status: json["status"] != null ? json["status"] : "",
       message: json["message"],
-     data: Data.fromJson(json["data"]),
+      data: json["status"] == "1" ? Data.fromJson(json["data"]) : null,
     );
   }
 
   Map<String, dynamic> toJson() {
     return {
       "status": status,
-      "message": message,
+      "message": message,  
       "data": data.toJson(),
     };
   }
 }
 
 class Data {
-    Data({
-        this.userType,
-        this.token,
-        this.userProfile,
-    });
+  Data({
+    this.userType,
+    this.token,
+    this.userProfile,
+  });
 
-    String userType;
-    String token;
-    List<UserProfile> userProfile;
+  String userType;
+  String token;
+  List<UserProfile> userProfile;
 
-    factory Data.fromJson(Map<String, dynamic> json) => Data(
+  factory Data.fromJson(Map<String, dynamic> json) => Data(
         userType: json["user_type"],
         token: json["token"],
-        userProfile: List<UserProfile>.from(json["user_profile"].map((x) => UserProfile.fromJson(x))),
-    );
+        userProfile: List<UserProfile>.from(
+            json["user_profile"].map((x) => UserProfile.fromJson(x))),
+      );
 
-    Map<String, dynamic> toJson() => {
+  Map<String, dynamic> toJson() => {
         "user_type": userType,
         "token": token,
         "user_profile": List<dynamic>.from(userProfile.map((x) => x.toJson())),
-    };
+      };
 }
 
 class UserProfile {
-    UserProfile({
-        this.empId,
-        this.empFirstname,
-        this.empLastname,
-        this.empUsername,
-        this.empPassword,
-        this.empPhone,
-        this.empEmail,
-        this.empImage,
-        this.empJoindate,
-        this.empDepartment,
-        this.empDesignation,
-        this.empSalary,
-        this.createdAt,
-        this.updatedAt,
-        this.id,
-        this.desName,
-        this.depId,
-    });
+  UserProfile({
+    this.empId,
+    this.empFirstname,
+    this.empLastname,
+    this.empUsername,
+    this.empPassword,
+    this.empPhone,
+    this.empEmail,
+    this.empImage,
+    this.empJoindate,
+    this.empDepartment,
+    this.empDesignation,
+    this.empSalary,
+    this.createdAt,
+    this.updatedAt,
+    this.id,
+    this.desName,
+    this.depId,
+  });
 
-    String empId;
-    String empFirstname;
-    String empLastname;
-    String empUsername;
-    String empPassword;
-    String empPhone;
-    String empEmail;
-    String empImage;
-    DateTime empJoindate;
-    int empDepartment;
-    int empDesignation;
-    int empSalary;
-    DateTime createdAt;
-    dynamic updatedAt;
-    int id;
-    String desName;
-    int depId;
+  String empId;
+  String empFirstname;
+  String empLastname;
+  String empUsername;
+  String empPassword;
+  String empPhone;
+  String empEmail;
+  String empImage;
+  DateTime empJoindate;
+  int empDepartment;
+  int empDesignation;
+  int empSalary;
+  DateTime createdAt;
+  dynamic updatedAt;
+  int id;
+  String desName;
+  int depId;
 
-    factory UserProfile.fromJson(Map<String, dynamic> json) => UserProfile(
+  factory UserProfile.fromJson(Map<String, dynamic> json) => UserProfile(
         empId: json["emp_id"],
         empFirstname: json["emp_firstname"],
         empLastname: json["emp_lastname"],
@@ -107,9 +108,9 @@ class UserProfile {
         id: json["id"],
         desName: json["des_name"],
         depId: json["dep_id"],
-    );
+      );
 
-    Map<String, dynamic> toJson() => {
+  Map<String, dynamic> toJson() => {
         "emp_id": empId,
         "emp_firstname": empFirstname,
         "emp_lastname": empLastname,
@@ -127,6 +128,5 @@ class UserProfile {
         "id": id,
         "des_name": desName,
         "dep_id": depId,
-    };
+      };
 }
-

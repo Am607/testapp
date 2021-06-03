@@ -1,11 +1,9 @@
-import 'dart:convert';
-
+import 'package:device_info/device_info.dart';
 import 'package:flutter/material.dart';
 import 'package:testapp/Model/usersModel.dart';
 import 'package:testapp/Services/loginServices.dart';
 import 'package:testapp/View/home.dart';
 
-import 'package:testapp/View/homePage.dart';
 import 'package:testapp/View/progress.dart';
 
 import 'package:testapp/Widgets/customWidgets.dart';
@@ -16,6 +14,7 @@ class Login extends StatefulWidget {
 }
 
 class _LoginState extends State<Login> {
+  DeviceInfoPlugin deviceInfoPlugin = DeviceInfoPlugin();
   bool isApiCall = false;
   final userNameController = TextEditingController();
   final passwordController = TextEditingController();
@@ -86,12 +85,17 @@ class _LoginState extends State<Login> {
                 height: 70,
                 padding: EdgeInsets.all(10),
                 child: RaisedButton(
-                  onPressed: () {
+                  onPressed: () async {
+                    AndroidDeviceInfo androidInfo =
+                        await deviceInfoPlugin.androidInfo;
+                    print("${androidInfo.androidId}");
+
                     setState(() {
                       isApiCall = true;
                       APIServices apiServices = APIServices();
                       apiServices
                           .authenticate(
+                              id: androidInfo.androidId,
                               password: passwordController.text,
                               phone: userNameController.text)
                           .then((value) {
@@ -112,9 +116,15 @@ class _LoginState extends State<Login> {
                                             .data.userProfile[0].empLastname,
                                       )),
                             );
+                          } else {
+                            print('login failed1');
+                            showDialog(
+                                context: context,
+                                builder: (_) => AlertDialog(
+                                      content: Text('login failed'),
+                                    ));
                           }
                           print(value.status[0].toString());
-                          print('aaa');
                         }
                       });
                     });
